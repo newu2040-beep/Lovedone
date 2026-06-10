@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "605538603970",
+    "project_id": "gen-lang-client-0561819624",
+    "storage_bucket": "gen-lang-client-0561819624.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605538603970:android:3fe374a09b4970e9a83c5b",
+        "android_client_info": {
+          "package_name": "com.lovedone.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605538603970-aej63rak6jn382k8m1s35907jfumt203.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB07XoI2xcjr0OyZVBFauOtjTH0uccHXLo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605538603970-aej63rak6jn382k8m1s35907jfumt203.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

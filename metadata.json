@@ -1,0 +1,6 @@
+{
+  "name": "LovedOne",
+  "description": "LovedOne is a premium digital gifting platform. Create customizable gift cards, memory collections, and surprises with AI assistance, beautiful Neumorphic design, and QR sharing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
