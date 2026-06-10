@@ -112,6 +112,7 @@ dependencies {
   implementation(libs.firebase.messaging)
   implementation(libs.firebase.analytics)
   implementation(libs.firebase.ai)
+  implementation(libs.play.services.auth)
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.core)
   testImplementation(libs.androidx.junit)

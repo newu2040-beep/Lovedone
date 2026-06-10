@@ -43,7 +43,10 @@ zxing = "3.5.3"
 biometric = "1.2.0-alpha05"
 googleServices = "4.4.2"
 
+playServicesAuth = "21.1.1"
+
 [libraries]
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

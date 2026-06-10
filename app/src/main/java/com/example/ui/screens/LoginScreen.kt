@@ -18,6 +18,14 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+import android.app.Activity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -28,6 +36,31 @@ fun LoginScreen(navController: NavController) {
     val scope = rememberCoroutineScope()
 
     val auth = FirebaseAuth.getInstance()
+    
+    val googleSignInLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+                auth.signInWithCredential(credential).addOnCompleteListener { authTask ->
+                    if (authTask.isSuccessful) {
+                        navController.navigate("dashboard") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    } else {
+                        errorMessage = authTask.exception?.message ?: "Google Sign In Failed"
+                        isLoading = false
+                    }
+                }
+            } catch (e: ApiException) {
+                errorMessage = "Google Sign In Failed: ${e.message}"
+                isLoading = false
+            }
+        } else {
+            isLoading = false
+        }
+    }
     
     LaunchedEffect(Unit) {
         if (auth.currentUser != null) {
@@ -142,6 +175,49 @@ fun LoginScreen(navController: NavController) {
                         } else {
                             Text("Sign In or Sign Up", fontWeight = FontWeight.SemiBold)
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text("OR", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    val context = androidx.compose.ui.platform.LocalContext.current
+                    OutlinedButton(
+                        onClick = {
+                            isLoading = true
+                            errorMessage = null
+                            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken("605538603970-aej63rak6jn382k8m1s35907jfumt203.apps.googleusercontent.com")
+                                .requestEmail()
+                                .build()
+                            val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                            googleSignInLauncher.launch(googleSignInClient.signInIntent)
+                        },
+                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Text("Sign In with Google", color = MaterialTheme.colorScheme.onSurface)
+                    }
+                    
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    TextButton(
+                        onClick = {
+                            isLoading = true
+                            errorMessage = null
+                            auth.signInAnonymously().addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    navController.navigate("dashboard") {
+                                        popUpTo("login") { inclusive = true }
+                                    }
+                                } else {
+                                    errorMessage = task.exception?.message ?: "Anonymous auth failed"
+                                    isLoading = false
+                                }
+                            }
+                        }
+                    ) {
+                        Text("Continue as Guest")
                     }
                 }
             }
